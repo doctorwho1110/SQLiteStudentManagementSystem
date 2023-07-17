@@ -1,7 +1,7 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QGridLayout, \
     QLineEdit, QPushButton, QMainWindow, QTableWidget, QTableWidgetItem, QDialog, \
-    QVBoxLayout, QComboBox, QToolBar, QStatusBar,QMessageBox
+    QVBoxLayout, QComboBox, QToolBar, QStatusBar, QMessageBox
 from PyQt6.QtGui import QAction, QIcon
 import sys
 import sqlite3
@@ -24,6 +24,7 @@ class MainWindow(QMainWindow):
         about_action = QAction("About", self)
         help_menu_item.addAction(about_action)
         about_action.setMenuRole(QAction.MenuRole.NoRole)
+        about_action.triggered.connect(self.about)
 
         search_action = QAction(QIcon("icons/search.png"), "Search", self)
         edit_menu_item.addAction(search_action)
@@ -90,6 +91,23 @@ class MainWindow(QMainWindow):
     def delete(self):
         dialog = DeleteDialog()
         dialog.exec()
+
+    def about(self):
+        dialog = AboutDialog()
+        dialog.exec()
+
+
+class AboutDialog(QMessageBox):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("About")
+
+        content = """
+        This app was created during the course"
+        The Python Mega Course"
+        Feel free to modify and restore
+        """
+        self.setText(content)
 
 
 class EditDialog(QDialog):
@@ -185,7 +203,7 @@ class DeleteDialog(QDialog):
 
         self.close()
 
-        confirmation_widget=QMessageBox()
+        confirmation_widget = QMessageBox()
         confirmation_widget.setWindowTitle("Success")
         confirmation_widget.setText("The record was deleted succesfully")
         confirmation_widget.exec()
